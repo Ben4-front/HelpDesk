@@ -8,7 +8,10 @@ on:
 
 permissions:
   contents: write
-
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
 jobs:
   build-and-deploy:
     concurrency: ci-${{ github.ref }}
