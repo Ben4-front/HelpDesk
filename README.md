@@ -1,4 +1,4 @@
-Домашнее задание к занятию "7. Работа с HTTP".
+Домашнее задание к занятию "7. Работа с HTTP"
 
 Ссылка на проект: https://github.com/Ben4-front/HelpDesk/
 [![Netology AHJ](https://github.com/Ben4-front/HelpDesk/actions/workflows/web.yml/badge.svg)](https://github.com/Ben4-front/HelpDesk/actions/workflows/web.yml)
@@ -121,4 +121,4 @@ DELETE /files/<id> - идентификатор файла (где <id> - иде
 
 Вы можете реализовать развёртывание в удобном для вас формате: либо так, как это было описано на лекции (отдельно для frontend + GitHub Pages и backend), либо собрать frontend и настроить backend так, чтобы он обрабатывал frontend так же, как картинки.
 
-Используйте FormData для отправки данных. Авто-тесты к данной задаче не нужны.
+Используйте FormData для отправки данных. Авто-тесты к данной задаче не нужны
