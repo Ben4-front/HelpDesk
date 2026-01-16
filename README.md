@@ -1,4 +1,4 @@
-Домашнее задание к занятию "7. Работа с HTTP"
+Домашнее задание к занятию "7. Работа с HTTP".
 
 Ссылка на проект: https://github.com/Ben4-front/HelpDesk/
 [![Netology AHJ](https://github.com/Ben4-front/HelpDesk/actions/workflows/web.yml/badge.svg)](https://github.com/Ben4-front/HelpDesk/actions/workflows/web.yml)
