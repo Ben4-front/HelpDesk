@@ -1,7 +1,7 @@
 Домашнее задание к занятию "7. Работа с HTTP"
 
 Ссылка на проект: https://github.com/Ben4-front/HelpDesk/
-[![Netology AHJ](https://github.com/Ben4-front/HelpDesk/actions/workflows/web.yml/badge.svg)](https://github.com/Ben4-front/HelpDesk/actions/workflows/web.yml)
+[![Build and Deploy](https://github.com/Ben4-front/HelpDesk/actions/workflows/web.yml/badge.svg)](https://github.com/Ben4-front/HelpDesk/actions/workflows/web.yml)
 Правила сдачи задания:
 
 Важно: в рамках этого домашнего задания нужно использовать npm (а значит, никакого yarn.lock в репозитории быть не должно)
