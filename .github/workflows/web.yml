@@ -21,17 +21,18 @@ jobs:
         with:
           node-version: 20
           cache: 'npm'
-
+          
+          
       - name: Install dependencies 🔧
         run: npm ci
-        working-directory: ./HelpDesk
+        
 
       - name: Build 🏗️
         run: npm run build
-        working-directory: ./HelpDesk
+        
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: HelpDesk/dist
+          folder: dist  
           branch: gh-pages
