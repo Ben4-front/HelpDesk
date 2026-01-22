@@ -5,13 +5,12 @@ export default class HelpDesk {
     this.root = root;
     this.api = new HelpDeskAPI('http://localhost:7070'); 
     
-    
     this.container = this.root.querySelector('.tickets-container');
     
+
     this.modal = document.querySelector('#ticket-modal');
     this.deleteModal = document.querySelector('#delete-modal');
     this.form = document.querySelector('#ticket-form');
-    // -------------------------
 
     this.currentEditId = null;
     this.currentDeleteId = null;
@@ -30,22 +29,25 @@ export default class HelpDesk {
     }
 
 
-    const cancelBtns = document.querySelectorAll('.cancel-btn'); 
+    const cancelBtns = document.querySelectorAll('.cancel-btn');
     cancelBtns.forEach(btn => btn.addEventListener('click', () => this.closeModals()));
-
 
     if (this.form) {
         this.form.addEventListener('submit', (e) => this.onSubmit(e));
     }
 
 
-    const confirmDeleteBtn = document.querySelector('.confirm-delete-btn'); // Ищем по документу
+    const confirmDeleteBtn = document.querySelector('.confirm-delete-btn');
     if (confirmDeleteBtn) {
         confirmDeleteBtn.addEventListener('click', () => this.onDeleteConfirm());
     }
 
 
-    this.container.addEventListener('click', (e) => this.onTicketClick(e));
+    if (this.container) {
+        this.container.addEventListener('click', (e) => this.onTicketClick(e));
+    } else {
+        console.error('Контейнер .tickets-container не найден!');
+    }
   }
 
   async loadTickets() {
@@ -58,6 +60,7 @@ export default class HelpDesk {
   }
 
   renderTickets(tickets) {
+    if (!this.container) return; 
     this.container.innerHTML = '';
     tickets.forEach(ticket => {
       const ticketEl = this.createTicketElement(ticket);
@@ -80,7 +83,7 @@ export default class HelpDesk {
             <span class="status-circle ${ticket.status ? 'done' : ''}"></span>
         </div>
         <div class="ticket-body">
-            <div class="ticket-name">${ticket.name}</div>
+            <div class="ticket-name"></div> <!-- Пустой контейнер -->
         </div>
         <div class="ticket-date">${date}</div>
         <div class="ticket-controls">
@@ -89,6 +92,13 @@ export default class HelpDesk {
         </div>
         <div class="ticket-description" style="display: none;">Loading...</div>
     `;
+
+
+    const nameEl = el.querySelector('.ticket-name');
+    if (nameEl) {
+        nameEl.textContent = ticket.name;
+    }
+
     return el;
   }
 
@@ -97,22 +107,19 @@ export default class HelpDesk {
     if (!ticketEl) return;
     
     const id = ticketEl.dataset.id;
-    console.log('Клик по тикету ID:', id, 'Цель:', e.target); 
 
 
     if (e.target.closest('.ticket-status') || e.target.classList.contains('status-circle')) {
         const circle = ticketEl.querySelector('.status-circle');
         const newStatus = !circle.classList.contains('done');
         
-
-        circle.classList.toggle('done');
+        circle.classList.toggle('done'); 
         
         try {
             await this.api.update(id, { status: newStatus });
         } catch (err) {
-            console.error('Ошибка обновления статуса:', err);
-
-            circle.classList.toggle('done');
+            console.error(err);
+            circle.classList.toggle('done'); 
         }
         return;
     }
@@ -123,21 +130,18 @@ export default class HelpDesk {
             const fullTicket = await this.api.get(id);
             this.openModal('edit', fullTicket);
         } catch (err) {
-            console.error('Ошибка получения тикета:', err);
+            console.error(err);
         }
         return;
     }
+
 
     if (e.target.closest('.delete-btn')) {
         this.currentDeleteId = id;
-
-        if (this.deleteModal) {
-            this.deleteModal.classList.add('active');
-        } else {
-            console.error('Модальное окно удаления не найдено в DOM');
-        }
+        if (this.deleteModal) this.deleteModal.classList.add('active');
         return;
     }
+
 
     if (e.target.closest('.ticket-controls')) return;
 
@@ -148,14 +152,12 @@ export default class HelpDesk {
             descEl.style.display = 'none';
         } else {
             descEl.style.display = 'block';
-            
-
             if (descEl.textContent === 'Loading...' || descEl.textContent === '') {
                  try {
                      const fullTicket = await this.api.get(id);
                      descEl.textContent = fullTicket.description || 'Нет описания';
                  } catch (err) {
-                     descEl.textContent = 'Ошибка загрузки описания';
+                     descEl.textContent = 'Ошибка загрузки';
                  }
             }
         }
@@ -207,7 +209,7 @@ export default class HelpDesk {
         this.closeModals();
         this.loadTickets();
     } catch (err) {
-        console.error('Ошибка при сохранении:', err);
+        console.error(err);
     }
   }
 
@@ -219,7 +221,7 @@ export default class HelpDesk {
             this.closeModals();
             this.loadTickets();
         } catch (err) {
-            console.error('Ошибка удаления:', err);
+            console.error(err);
         }
     }
   }
